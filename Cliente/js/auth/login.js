@@ -1,32 +1,40 @@
-document.addEventListener('init', function(event) {
-  var page = event.target;
+var myUser = localStorage.getItem("myPoliUser");
+
+// document.addEventListener('init', function(event) {
+//   if (myUser) {
+//     window.location.replace("content.html");
+//   }
+// });
+
+// document.addEventListener("deviceready", onDeviceReady, false);
+// function onDeviceReady() {
+//   ons.notification.toast(device.uuid);
+// };
+
+var authUser = function() {
   var username = document.getElementById('username').value;
   var password = document.getElementById('password').value;
-  var error = document.getElementById('errorMessage');
-  if (page.id === 'login') {
-    page.querySelector('#login').onclick = function() {
-      //Hace validación de usuario
-      //Toca buscar una forma segura ya que hacer esta comparación acá no lo es
-      if (username === 'user' && password === 'secret') {
-        document.querySelector('#myNavigator').pushPage('home.html', {
-          data: {
-            title: 'TODO'
-          }
-        });
-      } else {
-        //ons.notification.alert('Datos de usuario incorrectos.');
-        toggleToast();
-      }
-    };
-    page.querySelector('#reestablecer').onclick = function(){
-        window.open("RecordarContrasena.html");
+
+  //Toca buscar una forma segura ya que hacer esta comparación acá no lo es
+  var urlReq = "http://localhost:8080/random?";
+  urlReq += "username=";
+  urlReq += username;
+  urlReq += "&";
+  urlReq += "password=";
+  urlReq += password;
+  // urlReq += "&";
+  // urlReq += "deviceId=";
+  // urlReq += deviceId;
+
+  $.when( $.ajax( urlReq ) ).then(function( data, textStatus, jqXHR ) {
+    if (data) {
+      console.log(data.token);
+      localStorage.setItem('myPoliUser', data.token);
+      window.location.replace("content.html");
     }
-  } else if (page.id === 'home') {
-    page.querySelector('ons-toolbar .center').innerHTML = page.data.title;
-  }
-});
+    else {
+      ons.notification.alert('Datos de usuario incorrectos.');
+    }
+  });
 
-
-function toggleToast() {
-  document.querySelector('ons-toast').toggle();
-}
+};
