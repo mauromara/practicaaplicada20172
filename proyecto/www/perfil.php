@@ -28,6 +28,7 @@
   <link rel="stylesheet" href="lib/onsenui/css/onsenui.css">
   <link rel="stylesheet" href="lib/onsenui/css/onsen-css-components.min.css">
   <link rel="stylesheet" href="css/styleEventos.css">
+  <link rel="stylesheet" href="css/perfil.css">
 
   <script src="lib/onsenui/js/onsenui.min.js"></script>
   <script src="lib/jquery/jquery-3.2.1.min.js"></script>
@@ -50,7 +51,7 @@
       <ons-list style="background:#10305c; color:white">
         <ons-list-item onclick="fn.load('home.html')" tappable>
           <div class="profile-pic">
-                <img src="http://200.122.233.83/App/proyecto/www/img/user.png" style="width: 100px; height: 100px; margin:8px" class="center">
+                <img src="img/user.png" style="width: 100px; height: 100px; margin:8px" class="center">
                 <div><?= $dataUser[ 'NOMBRE1' ] . ' ' . $dataUser[ 'APELLIDO1' ] ?></div>
                 <div>ID: <?= $dataUser[ 'ID_USUARIO' ] ?></div>
               </div>
@@ -101,8 +102,14 @@
 
   <!-- Bar search Filter -->
   <div class="titlesearch center"> EDITAR PERFIL </div> <!-- Texto central filtros -->
-  <div class="contentSearch"> <!-- conten Bar search Filter y btn-->
-      </div>
+  <div class="contentEditPerfil"> <!-- conten Bar search Filter y btn-->
+    <img src="img/user.png" style="width: 100px; height: 100px; margin:8px" class="center">
+    <form class="formImgPerfil" action="upload.php" method="post" enctype="multipart/form-data">
+      <input type="file" class="imgPerfil" name="imgPerfil"> <br>
+      <input type="submit" class="btnEnviar" value="Subir Imagen" name="submit">
+    </form>
+    
+  </div>
   <!-- Fin Bar search Filter -->
 
 
