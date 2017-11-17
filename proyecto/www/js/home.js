@@ -19,11 +19,13 @@ function loadUser() {
       if (data.codeStatus === 200) {
         document.title = document.title + " " + data.NOMBRE_USUARIO;
         $("#lblWelcome").html("Bienvenido " + data.NOMBRE_USUARIO);
+        console.log( data );
       }
     },
     type: "post",
     url: URL_USER_SERVICE
   });
+    console.log( 'a' );
 }
 
 function logout() {
@@ -47,4 +49,9 @@ function logout() {
     type: "post",
     url: URL_LOGOUT_SERVICE
   });
+}
+
+
+function redirect( URL ){
+  window.location.href = URL;
 }

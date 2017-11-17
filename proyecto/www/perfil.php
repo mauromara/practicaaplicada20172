@@ -1,3 +1,21 @@
+<?php 
+  
+  require( '../app/usuario.php' );
+
+  $classUser = new Usuario();
+  print_r( mysqli_num_rows( $classUser->getUsuario() ) );
+
+  // Comprobamos validez del usuario
+  if ( $classUser->getUsuario() == false || empty( $_GET[ 'user' ] ) ) {
+    header( 'location: index.html' );
+
+  }
+
+  // Traemos datos del usuario
+  $dataUser = mysqli_fetch_array( $classUser->getUsuario(), MYSQL_ASSOC );
+
+?>
+
 <!doctype html>
 <html>
 <title>..::PoliEventos::..</title>
@@ -14,14 +32,16 @@
   <script src="lib/onsenui/js/onsenui.min.js"></script>
   <script src="lib/jquery/jquery-3.2.1.min.js"></script>
 
+  <script src="js/constants.js"></script>
   
   <script src="js/menu.js"></script>
   <script src="js/Event.js"></script>
   <script src="js/historyEvents.js"></script>
+  <script type="text/javascript" src="js/home.js"></script>
  
 </head>
 
-<body>
+<body onload="init();">
 
 <!--Menú desplegable-->
 <ons-splitter>
@@ -31,9 +51,12 @@
         <ons-list-item onclick="fn.load('home.html')" tappable>
           <div class="profile-pic">
                 <img src="http://200.122.233.83/App/proyecto/www/img/user.png" style="width: 100px; height: 100px; margin:8px" class="center">
-                <div>Nombre Apellido</div>
-                <div>Código Estudiante</div>
+                <div><?= $dataUser[ 'NOMBRE1' ] . ' ' . $dataUser[ 'APELLIDO1' ] ?></div>
+                <div>ID: <?= $dataUser[ 'ID_USUARIO' ] ?></div>
               </div>
+        </ons-list-item>
+        <ons-list-item onclick="fn.load('perfil.php?user=<?= $_GET[ 'user' ] ?>')" tappable>
+          Perfil
         </ons-list-item>
         <ons-list-item onclick="fn.load('saved.html')" tappable>
           Eventos Guardados
@@ -77,22 +100,11 @@
   
 
   <!-- Bar search Filter -->
-  <div class="titlesearch center"> Encuentra tu próxima experiencia</div> <!-- Texto central filtros -->
+  <div class="titlesearch center"> EDITAR PERFIL </div> <!-- Texto central filtros -->
   <div class="contentSearch"> <!-- conten Bar search Filter y btn-->
-    <div class="contenedorbarrabusqueda"> <!-- contenedor de Bar search Filter-->
-      <input type="text" id="Filtros" onkeyup="createEventos2(this.value)" placeholder="Buscar eventos o categorías" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" aria-autocomplete="list" role="textbox" aria-haspopup="true" style=" padding: 9px; border-radius: 7px; color:black;">
-    </div>
-    <input type="submit" class="botonbusqueda" value="Buscar" alt="Buscar" data-checkpoint-name="homepage_search_submitted" aria-label="Buscar">
-  </div>
+      </div>
   <!-- Fin Bar search Filter -->
 
-
-
-
-
-  <!-- Eventos echo html-->
-  <div class="filter-home" id="list-eventos"></div>
-  <!-- Fin Eventos echo html-->
 
 
   <!--Bar footer-->
