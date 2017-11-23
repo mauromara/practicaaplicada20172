@@ -3,7 +3,7 @@
   require( '../app/usuario.php' );
 
   $classUser = new Usuario();
-  print_r( mysqli_num_rows( $classUser->getUsuario() ) );
+  var_dump( mysqli_num_rows( $classUser->getUsuario() ) );
 
   // Comprobamos validez del usuario
   if ( $classUser->getUsuario() == false || empty( $_GET[ 'user' ] ) ) {
@@ -12,7 +12,9 @@
   }
 
   // Traemos datos del usuario
-  $dataUser = mysqli_fetch_array( $classUser->getUsuario(), MYSQL_ASSOC );
+  $dataUser = mysqli_fetch_array( $classUser->getUsuario() );
+
+  var_dump( $dataUser );
 
 ?>
 

@@ -12,7 +12,9 @@
   }
 
   // Traemos datos del usuario
-  $dataUser = mysqli_fetch_array( $classUser->getUsuario(), MYSQL_ASSOC );
+  $dataUser = mysqli_fetch_array( $classUser->getUsuario() );
+
+  print_r( $dataUser );
 
 ?>
 
@@ -51,10 +53,15 @@
       <ons-list style="background:#10305c; color:white">
         <ons-list-item onclick="fn.load('home.html')" tappable>
           <div class="profile-pic">
-                <img src="img/user.png" style="width: 100px; height: 100px; margin:8px" class="center">
-                <div><?= $dataUser[ 'NOMBRE1' ] . ' ' . $dataUser[ 'APELLIDO1' ] ?></div>
-                <div>ID: <?= $dataUser[ 'ID_USUARIO' ] ?></div>
-              </div>
+            <?php if( ! empty( $dataUser[ 'FOTO' ] ) ): ?>
+              <img src="img/<?= $dataUser[ 'FOTO' ] ?>" style="width: 100px; height: 100px; margin:8px" class="center">
+            <?php else: ?>
+              <img src="img/user.png" style="width: 100px; height: 100px; margin:8px" class="center">
+            <?php endif; ?>
+            
+            <div><?= $dataUser[ 'NOMBRE1' ] . ' ' . $dataUser[ 'APELLIDO1' ] ?></div>
+            <div>ID: <?= $dataUser[ 'ID_USUARIO' ] ?></div>
+          </div>
         </ons-list-item>
         <ons-list-item onclick="fn.load('perfil.php?user=<?= $_GET[ 'user' ] ?>')" tappable>
           Perfil
@@ -103,9 +110,17 @@
   <!-- Bar search Filter -->
   <div class="titlesearch center"> EDITAR PERFIL </div> <!-- Texto central filtros -->
   <div class="contentEditPerfil"> <!-- conten Bar search Filter y btn-->
-    <img src="img/user.png" style="width: 100px; height: 100px; margin:8px" class="center">
-    <form class="formImgPerfil" action="upload.php" method="post" enctype="multipart/form-data">
-      <input type="file" class="imgPerfil" name="imgPerfil"> <br>
+    <?php if( ! empty( $dataUser[ 'FOTO' ] ) ): ?>
+      <img src="img/<?= $dataUser[ 'FOTO' ] ?>" style="width: 100px; height: 100px; margin:8px" class="center">
+    <?php else: ?>
+      <img src="img/user.png" style="width: 100px; height: 100px; margin:8px" class="center">
+    <?php endif; ?>
+
+
+    <form class="formImgPerfil" action="../app/upload.php" method="post" enctype="multipart/form-data">
+      <input type="file" class="imgPerfil" name="FOTO" value=""> <br>
+      <input type="hidden" class="" name="ID_USUARIO" value="<?= $dataUser[ 'ID_USUARIO' ] ?>"> <br>
+      <input type="hidden" class="" name="NOMBRE1" value="<?= $dataUser[ 'NOMBRE1' ] ?>"> <br>
       <input type="submit" class="btnEnviar" value="Subir Imagen" name="submit">
     </form>
     

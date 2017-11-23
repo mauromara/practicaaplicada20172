@@ -1,7 +1,7 @@
 <?php
 
 /*
- * @Archivo: login.php
+ * @Archivo: usurio.php
  * @Descripcion: Validacion de usurio 
  */
 
@@ -67,6 +67,31 @@
 			$this-> SQL = "SELECT * FROM usuario WHERE NOMBRE_USUARIO = '%s'"; 
 			
 			$this-> SQL = sprintf( $this-> SQL, $this-> arrayDatos[ 'user' ] );
+
+			$this-> reponse = $this-> conex -> query( $this-> SQL );
+			// var_dump( $this-> reponse );
+
+			return $this-> reponse;
+			
+		}
+
+
+		/*
+		|-------------------------------------------------------------------------------
+		| Actualizamos foto usurio 
+		|-------------------------------------------------------------------------------
+		*/
+		public function fotoUsuario( $idUsuario, $nameImg ){
+
+			$this-> SQL = "UPDATE usuario SET 
+			FOTO='%s' 
+			WHERE ID_USUARIO='%s'";
+
+			$this-> SQL = sprintf( $this-> SQL
+					,	$nameImg
+					,	$idUsuario
+				);
+			// var_dump( $sql );
 
 			$this-> reponse = $this-> conex -> query( $this-> SQL );
 			// var_dump( $this-> reponse );
