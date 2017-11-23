@@ -1,9 +1,14 @@
 <?php 
   
   require( '../app/usuario.php' );
+  require( '../app/evento.php' );
 
+  // Traemos usuario
   $classUser = new Usuario();
-  print_r( mysqli_num_rows( $classUser->getUsuario() ) );
+  // print_r( mysqli_num_rows( $classUser->getUsuario() ) );
+
+  // Traemos evento
+  $classEvento = new Evento();
 
   // Comprobamos validez del usuario
   if ( $classUser->getUsuario() == false || empty( $_GET[ 'user' ] ) ) {
@@ -11,10 +16,15 @@
 
   }
 
+  // Traemos evento
+  $listEventos = $classEvento->listEventos();
+  // print_r( $listEventos );
+
+
   // Traemos datos del usuario
   $dataUser = mysqli_fetch_array( $classUser->getUsuario() );
+  // print_r( $dataUser );
 
-  print_r( $dataUser );
 
 ?>
 
@@ -108,22 +118,36 @@
   
 
   <!-- Bar search Filter -->
-  <div class="titlesearch center"> EDITAR PERFIL </div> <!-- Texto central filtros -->
+  <div class="titlesearch center"> LISTADO DE EVENTOS </div> <!-- Texto central filtros -->
   <div class="contentEditPerfil"> <!-- conten Bar search Filter y btn-->
-    <?php if( ! empty( $dataUser[ 'FOTO' ] ) ): ?>
-      <img src="img/<?= $dataUser[ 'FOTO' ] ?>" style="width: 100px; height: 100px; margin:8px" class="center">
-    <?php else: ?>
-      <img src="img/user.png" style="width: 100px; height: 100px; margin:8px" class="center">
-    <?php endif; ?>
 
+    <table class="tableEventos">
+      <tr>
+        <th>ID</th>
+        <th>NOMBRE</th>
+        <th>FECHA</th>
+        <th>RESUMEN</th>
+        <th>FECHA EDITADO</th>
+        <th>EDITAR</th>
+      </tr>
+      <?php
+        foreach ( $listEventos as $value) {
+          ?>
+          <tr>
+            <td><?php echo $value[ 'ID_EVENTO' ] ?></td>
+            <td><?php echo $value[ 'NOMBRE_EVENTO' ] ?></td>
+            <td><?php echo $value[ 'FECHA' ] ?></td>
+            <td><?php echo $value[ 'RESUMEN' ] ?></td>
+            <td><?php echo $value[ 'FECHA_EDITADO' ] ?></td>
+            <td>
+              <a href="eventos.php?user=<?= $_GET[ 'user' ] . '&evento=' . $value[ 'ID_EVENTO' ] ?>">Editar</a>
+            </td>
+          </tr>
+          <?php
+        }
+      ?>
+    </table>
 
-    <form class="formImgPerfil" action="../app/upload.php" method="post" enctype="multipart/form-data">
-      <input type="file" class="imgPerfil" name="FOTO" value=""> <br>
-      <input type="hidden" class="" name="ID_USUARIO" value="<?= $dataUser[ 'ID_USUARIO' ] ?>"> <br>
-      <input type="hidden" class="" name="NOMBRE1" value="<?= $dataUser[ 'NOMBRE1' ] ?>"> <br>
-      <input type="submit" class="btnEnviar" value="Subir Imagen" name="submit">
-    </form>
-    
   </div>
   <!-- Fin Bar search Filter -->
 

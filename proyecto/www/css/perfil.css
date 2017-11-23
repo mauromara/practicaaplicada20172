@@ -24,3 +24,23 @@
 .formEditEvento input{
 	color: #000;
 }
+
+.tableEventos{
+	margin: 0px auto;
+}
+
+.tableEventos td,
+.tableEventos th{
+	color: #555 !important;
+	border: 1px solid #ddd !important;
+	padding: 5px 8px;
+}
+
+.tableEventos a{
+	color: #2196F3;
+
+}
+
+.tableEventos, th, td {
+    border-collapse: collapse;
+}

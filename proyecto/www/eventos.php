@@ -3,14 +3,12 @@
   require( '../app/usuario.php' );
   require( '../app/evento.php' );
 
+  // Traemos usuario
   $classUser = new Usuario();
-  print_r( mysqli_num_rows( $classUser->getUsuario() ) );
+  // print_r( mysqli_num_rows( $classUser->getUsuario() ) );
 
-  // Comprobamos validez del usuario
-  if ( empty( $_GET[ 'evento' ] ) ) {
-    header( 'location: index.html' );
-
-  }
+  // Traemos evento
+  $classEvento = new Evento();
 
   // Comprobamos validez del usuario
   if ( $classUser->getUsuario() == false || empty( $_GET[ 'user' ] ) ) {
@@ -18,10 +16,20 @@
 
   }
 
+  // Comprobamos validez del usuario
+  if ( $classEvento->getEvento( $_GET[ 'evento' ] ) == false || empty( $_GET[ 'evento' ] ) ) {
+    header( 'location: index.html' );
+
+  }
+
+  // Traemos evento
+  $dataEvento = mysqli_fetch_array( $classEvento->getEvento( $_GET[ 'evento' ] ) );
+  print_r( $dataEvento );
+
+
   // Traemos datos del usuario
   $dataUser = mysqli_fetch_array( $classUser->getUsuario() );
-
-  print_r( $dataUser );
+  // print_r( $dataUser );
 
 ?>
 
@@ -73,7 +81,7 @@
         <ons-list-item onclick="fn.load('perfil.php?user=<?= $_GET[ 'user' ] ?>')" tappable>
           Perfil
         </ons-list-item>
-        <ons-list-item onclick="fn.load('saved.html')" tappable>
+        <ons-list-item onclick="window.location.href = 'lista-eventos.php?user=<?= $_GET[ 'user' ] ?>'" tappable>
           Eventos Guardados
         </ons-list-item>
         <ons-list-item onclick="fn.load('reserved.html')" tappable>
@@ -118,60 +126,55 @@
   <div class="titlesearch center"> EDITAR EVENTO </div> <!-- Texto central filtros -->
   <div class="contentEditPerfil"> <!-- conten Bar search Filter y btn-->
 
-    <form class="formEditEvento" action="../app/upload.php" method="post">
+    <form class="formEditEvento" action="../app/evento.php" method="post">
       NOMBRE EVENTO
-      <input type="text" name="NOMBRE_EVENTO" value=""> <br><br>
+      <input type="text" name="NOMBRE_EVENTO" value="<?= $dataEvento[ 'NOMBRE_EVENTO' ] ?>"> <br><br>
 
       FECHA
-      <input type="date" name="FECHA" value=""> <br><br>
+      <input type="text" name="FECHA" value="<?= date( 'd/m/Y', strtotime(str_replace( '-','/', $dataEvento[ 'FECHA' ] )) ) ?>"> <br><br>
 
       RESUMEN
-      <input type="text" name="RESUMEN" value=""> <br><br>
+      <input type="text" name="RESUMEN" value="<?= $dataEvento[ 'RESUMEN' ] ?>"> <br><br>
 
       DESCRIPCION
-      <input type="text" name="DESCRIPCION" value=""> <br><br>
+      <input type="text" name="DESCRIPCION" value="<?= $dataEvento[ 'DESCRIPCION' ] ?>"> <br><br>
 
-      CATEGORIA
-      <input type="text" name="CATEGORIA" value=""> <br><br>
+      CATEGORIA &nbsp; <?= $dataEvento[ 'CATEGORIA' ] ?> <br><br>
+      <!-- <input type="text" name="CATEGORIA" value="<?= $dataEvento[ 'CATEGORIA' ] ?>"> <br><br> -->
 
-      SEDE
-      <input type="text" name="SEDE" value=""> <br><br>
+      SEDE &nbsp; <?= $dataEvento[ 'SEDE' ] ?> <br><br>
+      <!-- <input type="text" name="SEDE" value="<?= $dataEvento[ 'SEDE' ] ?>"> <br><br> -->
 
       LUGAR
-      <input type="text" name="LUGAR" value=""> <br><br>
+      <input type="text" name="LUGAR" value="<?= $dataEvento[ 'LUGAR' ] ?>"> <br><br>
 
       CUPOS
-      <input type="text" name="CUPOS" value=""> <br><br>
+      <input type="text" name="CUPOS" value="<?= $dataEvento[ 'CUPOS' ] ?>"> <br><br>
 
       DURACION_HORAS
-      <input type="text" name="DURACION_HORAS" value=""> <br><br>
+      <input type="text" name="DURACION_HORAS" value="<?= $dataEvento[ 'DURACION_HORAS' ] ?>"> <br><br>
 
-      FACULTAD
-      <input type="text" name="FACULTAD" value=""> <br><br>
+      FACULTAD &nbsp; <?= $dataEvento[ 'FACULTAD' ] ?> <br><br>
+      <!-- <input type="text" name="FACULTAD" value="<?= $dataEvento[ 'FACULTAD' ] ?>"> <br><br> -->
 
       CREDITOS
-      <input type="text" name="CREDITOS" value=""> <br><br>
+      <input type="text" name="CREDITOS" value="<?= $dataEvento[ 'CREDITOS' ] ?>"> <br><br>
 
-      FECHA_PROGRAMADO
-      <input type="date" name="FECHA_PROGRAMADO" value=""> <br><br>
+      FECHA_PROGRAMADO &nbsp; <?= $dataEvento[ 'FECHA_PROGRAMADO' ] ?> <br><br>
+      <!-- <input type="text" name="FECHA_PROGRAMADO" value="<?= $dataEvento[ 'FECHA_PROGRAMADO' ] ?>" readonly> <br><br> -->
 
-      FECHA_CREADO
-      <input type="date" name="FECHA_CREADO" value=""> <br><br>
+      FECHA_CREADO &nbsp; <?= $dataEvento[ 'FECHA_CREADO' ] ?> <br><br>
+      <!-- <input type="text" name="FECHA_CREADO" value="<?= $dataEvento[ 'FECHA_CREADO' ] ?>" readonly> <br><br> -->
 
-      MARCA_ELIMINADO
-      <input type="text" name="MARCA_ELIMINADO" value=""> <br><br>
+      FECHA_EDITADO &nbsp; <?= $dataEvento[ 'FECHA_EDITADO' ] ?> <br><br>
+      <!-- <input type="text" name="FECHA_EDITADO" value="<?= $dataEvento[ 'FECHA_EDITADO' ] ?>"> <br> -->
 
-      FECHA_ELIMINADO
-      <input type="date" name="FECHA_ELIMINADO" value=""> <br><br>
-
-      FECHA_EDITADO
-      <input type="date" name="FECHA_EDITADO" value=""> <br><br>
-
+      <input type="hidden" class="" name="ID_EVENTO" value="<?= $_GET[ 'evento' ] ?>"> <br>
       <input type="hidden" class="" name="ID_USUARIO" value="<?= $dataUser[ 'ID_USUARIO' ] ?>"> <br>
       <input type="hidden" class="" name="NOMBRE1" value="<?= $dataUser[ 'NOMBRE1' ] ?>"> <br>
-      <input type="submit" class="btnEnviar" value="Subir Imagen" name="submit">
+      <input type="submit" class="btnEnviar" value="Actualizar evento" name="submit">
     </form>
-    
+
   </div>
   <!-- Fin Bar search Filter -->
 

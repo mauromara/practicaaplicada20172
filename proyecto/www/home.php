@@ -65,7 +65,7 @@
         <ons-list-item onclick="window.location.href = 'perfil.php?user=<?= $_GET[ 'user' ] ?>' " tappable>
           Perfil
         </ons-list-item>
-        <ons-list-item onclick="fn.load('saved.html')" tappable>
+        <ons-list-item onclick="window.location.href = 'lista-eventos.php?user=<?= $_GET[ 'user' ] ?>'" tappable>
           Eventos Guardados
         </ons-list-item>
         <ons-list-item onclick="fn.load('reserved.html')" tappable>
