@@ -1,9 +1,16 @@
 <?php 
   
   require( '../app/usuario.php' );
+  require( '../app/evento.php' );
 
   $classUser = new Usuario();
-  var_dump( mysqli_num_rows( $classUser->getUsuario() ) );
+  print_r( mysqli_num_rows( $classUser->getUsuario() ) );
+
+  // Comprobamos validez del usuario
+  if ( empty( $_GET[ 'evento' ] ) ) {
+    header( 'location: index.html' );
+
+  }
 
   // Comprobamos validez del usuario
   if ( $classUser->getUsuario() == false || empty( $_GET[ 'user' ] ) ) {
@@ -14,7 +21,7 @@
   // Traemos datos del usuario
   $dataUser = mysqli_fetch_array( $classUser->getUsuario() );
 
-  var_dump( $dataUser );
+  print_r( $dataUser );
 
 ?>
 
@@ -30,6 +37,7 @@
   <link rel="stylesheet" href="lib/onsenui/css/onsenui.css">
   <link rel="stylesheet" href="lib/onsenui/css/onsen-css-components.min.css">
   <link rel="stylesheet" href="css/styleEventos.css">
+  <link rel="stylesheet" href="css/perfil.css">
 
   <script src="lib/onsenui/js/onsenui.min.js"></script>
   <script src="lib/jquery/jquery-3.2.1.min.js"></script>
@@ -57,12 +65,12 @@
             <?php else: ?>
               <img src="img/user.png" style="width: 100px; height: 100px; margin:8px" class="center">
             <?php endif; ?>
-
+            
             <div><?= $dataUser[ 'NOMBRE1' ] . ' ' . $dataUser[ 'APELLIDO1' ] ?></div>
             <div>ID: <?= $dataUser[ 'ID_USUARIO' ] ?></div>
           </div>
         </ons-list-item>
-        <ons-list-item onclick="window.location.href = 'perfil.php?user=<?= $_GET[ 'user' ] ?>' " tappable>
+        <ons-list-item onclick="fn.load('perfil.php?user=<?= $_GET[ 'user' ] ?>')" tappable>
           Perfil
         </ons-list-item>
         <ons-list-item onclick="fn.load('saved.html')" tappable>
@@ -107,22 +115,66 @@
   
 
   <!-- Bar search Filter -->
-  <div class="titlesearch center"> Encuentra tu próxima experiencia</div> <!-- Texto central filtros -->
-  <div class="contentSearch"> <!-- conten Bar search Filter y btn-->
-    <div class="contenedorbarrabusqueda"> <!-- contenedor de Bar search Filter-->
-      <input type="text" id="Filtros" onkeyup="createEventos2(this.value)" placeholder="Buscar eventos o categorías" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" aria-autocomplete="list" role="textbox" aria-haspopup="true" style=" padding: 9px; border-radius: 7px; color:black;">
-    </div>
-    <input type="submit" class="botonbusqueda" value="Buscar" alt="Buscar" data-checkpoint-name="homepage_search_submitted" aria-label="Buscar">
+  <div class="titlesearch center"> EDITAR EVENTO </div> <!-- Texto central filtros -->
+  <div class="contentEditPerfil"> <!-- conten Bar search Filter y btn-->
+
+    <form class="formEditEvento" action="../app/upload.php" method="post">
+      NOMBRE EVENTO
+      <input type="text" name="NOMBRE_EVENTO" value=""> <br><br>
+
+      FECHA
+      <input type="date" name="FECHA" value=""> <br><br>
+
+      RESUMEN
+      <input type="text" name="RESUMEN" value=""> <br><br>
+
+      DESCRIPCION
+      <input type="text" name="DESCRIPCION" value=""> <br><br>
+
+      CATEGORIA
+      <input type="text" name="CATEGORIA" value=""> <br><br>
+
+      SEDE
+      <input type="text" name="SEDE" value=""> <br><br>
+
+      LUGAR
+      <input type="text" name="LUGAR" value=""> <br><br>
+
+      CUPOS
+      <input type="text" name="CUPOS" value=""> <br><br>
+
+      DURACION_HORAS
+      <input type="text" name="DURACION_HORAS" value=""> <br><br>
+
+      FACULTAD
+      <input type="text" name="FACULTAD" value=""> <br><br>
+
+      CREDITOS
+      <input type="text" name="CREDITOS" value=""> <br><br>
+
+      FECHA_PROGRAMADO
+      <input type="date" name="FECHA_PROGRAMADO" value=""> <br><br>
+
+      FECHA_CREADO
+      <input type="date" name="FECHA_CREADO" value=""> <br><br>
+
+      MARCA_ELIMINADO
+      <input type="text" name="MARCA_ELIMINADO" value=""> <br><br>
+
+      FECHA_ELIMINADO
+      <input type="date" name="FECHA_ELIMINADO" value=""> <br><br>
+
+      FECHA_EDITADO
+      <input type="date" name="FECHA_EDITADO" value=""> <br><br>
+
+      <input type="hidden" class="" name="ID_USUARIO" value="<?= $dataUser[ 'ID_USUARIO' ] ?>"> <br>
+      <input type="hidden" class="" name="NOMBRE1" value="<?= $dataUser[ 'NOMBRE1' ] ?>"> <br>
+      <input type="submit" class="btnEnviar" value="Subir Imagen" name="submit">
+    </form>
+    
   </div>
   <!-- Fin Bar search Filter -->
 
-
-
-
-
-  <!-- Eventos echo html-->
-  <div class="filter-home" id="list-eventos"></div>
-  <!-- Fin Eventos echo html-->
 
 
   <!--Bar footer-->
